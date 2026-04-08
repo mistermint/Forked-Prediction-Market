@@ -30,7 +30,7 @@
 
 	const navItems = [
 		{ href: '/dashboard', label: 'DASHBOARD' },
-		{ href: '/market', label: 'MARKETS', soon: true },
+		{ href: '/market', label: 'MARKETS' },
 		{ href: '/leaderboard', label: 'LEADERBOARD', soon: true },
 		{ href: '/profile', label: 'PROFILE' }
 	];
