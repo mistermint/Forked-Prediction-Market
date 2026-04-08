@@ -31,7 +31,7 @@
 	const navItems = [
 		{ href: '/dashboard', label: 'DASHBOARD' },
 		{ href: '/market', label: 'MARKETS' },
-		{ href: '/leaderboard', label: 'LEADERBOARD', soon: true },
+		{ href: '/leaderboard', label: 'LEADERBOARD' },
 		{ href: '/profile', label: 'PROFILE' }
 	];
 </script>
@@ -95,11 +95,20 @@
 			<a
 				href="/admin"
 				class="flex items-center px-3 py-2.5 rounded-retro text-xs font-mono transition-colors
-					{isActive('/admin')
+					{$page.url.pathname === '/admin'
 						? 'bg-surface-3 text-text-primary shadow-retro-sm'
 						: 'text-text-muted hover:bg-surface-2 hover:text-text-secondary'}"
 			>
-				ADMIN PANEL
+				USERS
+			</a>
+			<a
+				href="/admin/analytics"
+				class="flex items-center px-3 py-2.5 rounded-retro text-xs font-mono transition-colors
+					{isActive('/admin/analytics')
+						? 'bg-surface-3 text-text-primary shadow-retro-sm'
+						: 'text-text-muted hover:bg-surface-2 hover:text-text-secondary'}"
+			>
+				ANALYTICS
 			</a>
 		{/if}
 	</nav>

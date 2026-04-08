@@ -162,6 +162,30 @@
 		/>
 	</div>
 
+	<!-- Overlay URL (creator/admin only, market not settled) -->
+	{#if isCreator && market.status !== 'settled' && market.status !== 'cancelled'}
+		<div class="card border-accent-blue/20 space-y-2">
+			<p class="font-pixel text-pixel-xs text-accent-blue">OBS OVERLAY</p>
+			<p class="text-text-muted text-xs font-sans">
+				Add this as a Browser Source in OBS. Recommended size: 400×220px (standard) or 280×180px
+				with <code class="font-mono">?compact=1</code>.
+			</p>
+			<div class="flex items-center gap-2">
+				<code class="input flex-1 text-xs text-text-muted select-all cursor-text">
+					{typeof window !== 'undefined' ? window.location.origin : ''}/overlay?market={market.id}
+				</code>
+				<button
+					onclick={async () => {
+						await navigator.clipboard.writeText(
+							`${window.location.origin}/overlay?market=${market.id}`
+						);
+					}}
+					class="btn-secondary text-xs whitespace-nowrap">COPY</button
+				>
+			</div>
+		</div>
+	{/if}
+
 	<!-- User's bet -->
 	{#if userBet}
 		{@const betOutcome = market.outcomes?.find((o: { id: string }) => o.id === userBet!.outcome_id)}

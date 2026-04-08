@@ -186,7 +186,7 @@ Point `forked.gg` DNS A record to your server's public IP (or ALB).
 | 2 | Auth + user system | ✅ Done |
 | 3 | Dashboard + admin panel | ✅ Done |
 | 4 | Prediction engine core | ✅ Done |
-| 5 | Stream overlay | ⬜ Pending |
-| 6 | Rake engine (analytics) | ⬜ Pending |
-| 7 | Leaderboards | ⬜ Pending |
-| 8 | Streamer analytics + discovery | ⬜ Pending |
+| 5 | Stream overlay | ✅ Done |
+| 6 | Rake engine (analytics) | ✅ Done |
+| 7 | Leaderboards | ✅ Done |
+| 8 | Streamer analytics + discovery | ✅ Done |

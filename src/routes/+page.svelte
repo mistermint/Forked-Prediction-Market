@@ -40,14 +40,22 @@
 <nav class="border-b border-surface-3 px-6 py-4">
 	<div class="max-w-5xl mx-auto flex items-center justify-between">
 		<span class="font-pixel text-pixel-base text-forked-green">FORKED.GG</span>
-		<a
-			href="https://discord.gg/forkedgg"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="btn-secondary text-xs"
-		>
-			Join Discord
-		</a>
+		<div class="flex items-center gap-3">
+			<a href="/discover" class="text-text-muted text-sm font-mono hover:text-text-secondary transition-colors hidden sm:inline">
+				Discover
+			</a>
+			<a href="/how-it-works" class="text-text-muted text-sm font-mono hover:text-text-secondary transition-colors hidden sm:inline">
+				How It Works
+			</a>
+			<a
+				href="https://discord.gg/forkedgg"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn-secondary text-xs"
+			>
+				Join Discord
+			</a>
+		</div>
 	</div>
 </nav>
 

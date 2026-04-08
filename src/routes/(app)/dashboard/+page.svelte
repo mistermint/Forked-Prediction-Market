@@ -3,7 +3,7 @@
 	import MarketCard from '$components/prediction/MarketCard.svelte';
 
 	let { data } = $props();
-	let { profile, activeMarkets, recentActivity } = $derived(data);
+	let { profile, activeMarkets, recentActivity, streamerStats } = $derived(data);
 
 	function activityLabel(type: string, metadata: Record<string, unknown>) {
 		switch (type) {
@@ -115,4 +115,70 @@
 			</div>
 		{/if}
 	</div>
+
+	<!-- Streamer analytics (streamers and admins only) -->
+	{#if streamerStats}
+		<div class="space-y-4 border-t border-surface-3 pt-8">
+			<div class="flex items-center justify-between">
+				<h2 class="font-pixel text-pixel-xs text-accent-blue">STREAMER STATS</h2>
+				<a href="/admin/analytics" class="text-text-muted text-xs font-mono hover:text-text-secondary transition-colors">
+					Full analytics →
+				</a>
+			</div>
+
+			<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+				<div class="card space-y-1 text-center">
+					<p class="text-text-muted text-xs font-mono">MARKETS</p>
+					<p class="font-pixel text-pixel-base text-text-primary">{streamerStats.totalCreated}</p>
+				</div>
+				<div class="card space-y-1 text-center">
+					<p class="text-text-muted text-xs font-mono">VOLUME</p>
+					<p class="font-pixel text-pixel-base text-forked-green">{formatBalance(streamerStats.totalVolume)}</p>
+				</div>
+				<div class="card space-y-1 text-center">
+					<p class="text-text-muted text-xs font-mono">RAKE EARNED</p>
+					<p class="font-pixel text-pixel-base text-accent-yellow">{formatBalance(streamerStats.totalRake)}</p>
+				</div>
+				<div class="card space-y-1 text-center">
+					<p class="text-text-muted text-xs font-mono">OPEN NOW</p>
+					<p class="font-pixel text-pixel-base text-accent-green">{streamerStats.openCount}</p>
+				</div>
+			</div>
+
+			{#if streamerStats.markets.length > 0}
+				<div class="card p-0 overflow-hidden">
+					<table class="w-full text-sm">
+						<thead>
+							<tr class="border-b border-surface-3 bg-surface-2">
+								<th class="text-left px-4 py-2 text-text-muted font-mono text-xs">MARKET</th>
+								<th class="text-right px-4 py-2 text-text-muted font-mono text-xs">POOL</th>
+								<th class="text-right px-4 py-2 text-text-muted font-mono text-xs hidden sm:table-cell">STATUS</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each streamerStats.markets as m (m.id)}
+								<tr class="border-b border-surface-2 hover:bg-surface-2 transition-colors">
+									<td class="px-4 py-2">
+										<a href="/market/{m.id}" class="text-text-primary hover:text-forked-green transition-colors font-sans text-sm line-clamp-1">
+											{m.title}
+										</a>
+									</td>
+									<td class="px-4 py-2 text-right font-mono text-xs text-forked-green">{formatBalance(m.total_pool)}</td>
+									<td class="px-4 py-2 text-right hidden sm:table-cell">
+										<span class="font-mono text-xs capitalize text-text-muted">{m.status}</span>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<a href="/market/create" class="btn-primary inline-block text-center">+ NEW MARKET</a>
+			{:else}
+				<div class="card py-8 text-center space-y-3">
+					<p class="text-text-muted font-sans text-sm">You haven't created any markets yet.</p>
+					<a href="/market/create" class="btn-primary inline-block">CREATE FIRST MARKET</a>
+				</div>
+			{/if}
+		</div>
+	{/if}
 </div>
