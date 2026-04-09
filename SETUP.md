@@ -49,17 +49,13 @@ Migrations are SQL files that create all the tables and rules the app needs. You
 
 ### 1.4 Verify Realtime Is Enabled
 
-The app uses real-time updates (live bet counts, market changes, etc.). Check that these tables have realtime enabled:
+The migrations (step 1.3) automatically enable realtime on all required tables, so you likely don't need to do anything here. To confirm it worked:
 
-1. Go to **Database → Replication** in your Supabase project
-2. Click **Supabase Realtime** (or look for a "Source" section)
-3. Make sure these four tables are toggled on:
-   - `markets`
-   - `outcomes`
-   - `bets`
-   - `activity`
+1. Go to **Realtime** in the left sidebar of your Supabase project
+2. Click the **Inspect** tab (or **Configuration** depending on your dashboard version)
+3. You should see `markets`, `outcomes`, `bets`, and `activity` listed
 
-If they're not listed or not enabled, toggle them on.
+If any are missing, you can enable them from that screen. Otherwise, move on — the migrations handled it.
 
 ### 1.5 Configure Auth — Email
 
