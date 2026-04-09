@@ -47,11 +47,17 @@
 			<a href="/how-it-works" class="text-text-muted text-sm font-mono hover:text-text-secondary transition-colors hidden sm:inline">
 				How It Works
 			</a>
+			<a href="/login" class="text-text-muted text-sm font-mono hover:text-text-secondary transition-colors hidden sm:inline">
+				Log In
+			</a>
+			<a href="/signup" class="btn-secondary text-xs">
+				Sign Up
+			</a>
 			<a
 				href="https://discord.gg/forkedgg"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="btn-secondary text-xs"
+				class="btn-secondary text-xs hidden sm:inline-block"
 			>
 				Join Discord
 			</a>
