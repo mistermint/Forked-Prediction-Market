@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html {
+		@apply bg-surface text-text-primary font-sans;
+	}
+}
+
+@layer components {
+	.btn-primary {
+		@apply bg-forked-green text-forked-black font-pixel text-pixel-sm px-4 py-2 rounded-retro shadow-retro
+			hover:bg-forked-green-light active:translate-y-px active:shadow-none
+			transition-all duration-100 cursor-pointer inline-block;
+	}
+
+	.btn-secondary {
+		@apply bg-surface-3 text-text-primary font-sans text-sm px-4 py-2 rounded-retro
+			border border-surface-4 hover:bg-surface-4 transition-colors cursor-pointer inline-block;
+	}
+
+	.btn-danger {
+		@apply bg-accent-red text-white font-sans text-sm px-4 py-2 rounded-retro shadow-retro-sm
+			hover:opacity-90 transition-opacity cursor-pointer inline-block;
+	}
+
+	.card {
+		@apply bg-surface-1 border border-surface-3 rounded-retro p-4 shadow-retro-sm;
+	}
+
+	.input {
+		@apply bg-surface-2 border border-surface-3 rounded-retro px-3 py-2
+			text-text-primary font-mono text-sm
+			focus:outline-none focus:border-forked-green transition-colors w-full;
+	}
+
+	.heading-pixel {
+		@apply font-pixel text-forked-green;
+	}
+
+	.badge-win {
+		@apply bg-accent-green/20 text-accent-green text-xs font-mono px-2 py-0.5 rounded-retro;
+	}
+
+	.badge-loss {
+		@apply bg-accent-red/20 text-accent-red text-xs font-mono px-2 py-0.5 rounded-retro;
+	}
+
+	.badge-pending {
+		@apply bg-accent-yellow/20 text-accent-yellow text-xs font-mono px-2 py-0.5 rounded-retro;
+	}
+
+	.badge-info {
+		@apply bg-accent-blue/20 text-accent-blue text-xs font-mono px-2 py-0.5 rounded-retro;
+	}
+}
