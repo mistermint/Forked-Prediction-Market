@@ -56,6 +56,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		.single();
 
 	if (marketErr || !market) {
+		console.error('[POST /api/markets] market insert error:', JSON.stringify(marketErr));
 		return json({ error: 'Failed to create market.' }, { status: 500 });
 	}
 
@@ -69,18 +70,22 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	);
 
 	if (outcomesErr) {
-		// Clean up orphaned market
+		console.error('[POST /api/markets] outcomes insert error:', JSON.stringify(outcomesErr));
+		// Best-effort cleanup — no DELETE policy so this may silently fail
 		await locals.supabase.from('markets').delete().eq('id', market.id);
 		return json({ error: 'Failed to create outcomes.' }, { status: 500 });
 	}
 
-	// Activity: market created
-	await locals.supabase.from('activity').insert({
+	// Activity: market created (non-fatal if it fails — policy may be missing)
+	const { error: activityErr } = await locals.supabase.from('activity').insert({
 		user_id: session.user.id,
 		market_id: market.id,
 		type: 'market_created',
 		metadata: { market_title: market.title }
 	});
+	if (activityErr) {
+		console.warn('[POST /api/markets] activity insert error (non-fatal):', JSON.stringify(activityErr));
+	}
 
 	return json({ success: true, marketId: market.id });
 };
