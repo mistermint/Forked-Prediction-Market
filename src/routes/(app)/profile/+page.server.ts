@@ -14,5 +14,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		error(500, 'Could not load profile.');
 	}
 
-	return { profile };
+	const provider = session!.user.app_metadata?.provider ?? 'email';
+
+	return { profile, provider };
 };

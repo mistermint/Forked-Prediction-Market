@@ -5,6 +5,7 @@
 
 	let { data } = $props();
 
+	// ─── User management ───────────────────────────────────────────────
 	let search = $state('');
 	let selectedUserId = $state<string | null>(null);
 	let adjustType = $state<'play' | 'bet'>('play');
@@ -62,7 +63,7 @@
 		if (!res.ok) {
 			adjustError = json.error ?? 'Adjustment failed.';
 		} else {
-			adjustSuccess = `Balance updated.`;
+			adjustSuccess = 'Balance updated.';
 			adjustAmount = '';
 			await invalidateAll();
 		}
@@ -73,13 +74,48 @@
 	function roleClass(role: string) {
 		return { admin: 'badge-pending', streamer: 'badge-info', user: 'badge-win' }[role] ?? 'badge-info';
 	}
+
+	// ─── Invite codes ──────────────────────────────────────────────────
+	let codeQty = $state('1');
+	let generatingCodes = $state(false);
+	let codeError = $state('');
+	let newCodes = $state<string[]>([]);
+
+	async function handleGenerateCodes(e: SubmitEvent) {
+		e.preventDefault();
+		if (generatingCodes) return;
+		generatingCodes = true;
+		codeError = '';
+		newCodes = [];
+
+		const res = await fetch('/api/admin/invite-codes', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ quantity: parseInt(codeQty, 10) })
+		});
+
+		const json = await res.json();
+
+		if (!res.ok) {
+			codeError = json.error ?? 'Failed to generate codes.';
+		} else {
+			newCodes = json.codes;
+			await invalidateAll();
+		}
+
+		generatingCodes = false;
+	}
+
+	function copyCode(code: string) {
+		navigator.clipboard.writeText(code);
+	}
 </script>
 
 <svelte:head>
 	<title>Admin — Forked.gg</title>
 </svelte:head>
 
-<div class="space-y-8">
+<div class="space-y-10">
 	<div class="flex items-center justify-between">
 		<div>
 			<h1 class="font-pixel text-pixel-sm text-forked-green">ADMIN PANEL</h1>
@@ -152,12 +188,10 @@
 									</p>
 
 									<div class="flex gap-2">
-										<!-- Balance type -->
 										<select bind:value={adjustType} class="input flex-1">
 											<option value="play">Play Balance</option>
 											<option value="bet">BET Balance</option>
 										</select>
-										<!-- Mode -->
 										<select bind:value={adjustMode} class="input flex-1">
 											<option value="add">Add / Subtract</option>
 											<option value="set">Set Absolute</option>
@@ -201,5 +235,86 @@
 				{/each}
 			</tbody>
 		</table>
+	</div>
+
+	<!-- ─── Invite Codes ─────────────────────────────────────────────── -->
+	<div class="space-y-4 border-t border-surface-3 pt-8">
+		<div>
+			<h2 class="font-pixel text-pixel-xs text-accent-blue">CREATOR INVITE CODES</h2>
+			<p class="text-text-muted font-mono text-xs mt-1">Single-use codes that upgrade a user to streamer.</p>
+		</div>
+
+		<!-- Generate form -->
+		<form onsubmit={handleGenerateCodes} class="flex items-center gap-3">
+			<input
+				type="number"
+				bind:value={codeQty}
+				min="1"
+				max="20"
+				class="input w-24"
+				disabled={generatingCodes}
+			/>
+			<button type="submit" class="btn-primary text-xs" disabled={generatingCodes}>
+				{generatingCodes ? 'GENERATING...' : 'GENERATE CODES'}
+			</button>
+		</form>
+
+		{#if codeError}
+			<p class="text-accent-red text-xs font-mono">{codeError}</p>
+		{/if}
+
+		<!-- Newly generated codes -->
+		{#if newCodes.length > 0}
+			<div class="card space-y-2">
+				<p class="font-pixel text-pixel-xs text-accent-green">NEW CODES — COPY AND SHARE</p>
+				{#each newCodes as code}
+					<div class="flex items-center gap-3">
+						<code class="font-mono text-sm text-forked-green bg-surface-3 px-3 py-1 rounded-retro tracking-widest">{code}</code>
+						<button
+							onclick={() => copyCode(code)}
+							class="btn-secondary text-xs py-1 px-2"
+						>
+							COPY
+						</button>
+					</div>
+				{/each}
+			</div>
+		{/if}
+
+		<!-- Code history table -->
+		{#if data.inviteCodes.length > 0}
+			<div class="card p-0 overflow-hidden">
+				<table class="w-full text-sm">
+					<thead>
+						<tr class="border-b border-surface-3 bg-surface-2">
+							<th class="text-left px-4 py-3 text-text-muted font-mono text-xs">CODE</th>
+							<th class="text-left px-4 py-3 text-text-muted font-mono text-xs hidden sm:table-cell">CREATED</th>
+							<th class="text-left px-4 py-3 text-text-muted font-mono text-xs">STATUS</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each data.inviteCodes as invite (invite.id)}
+							<tr class="border-b border-surface-2">
+								<td class="px-4 py-3">
+									<code class="font-mono text-sm text-forked-green tracking-widest">{invite.code}</code>
+								</td>
+								<td class="px-4 py-3 text-text-muted font-mono text-xs hidden sm:table-cell">
+									{timeAgo(invite.created_at)}
+								</td>
+								<td class="px-4 py-3">
+									{#if invite.redeemed_by}
+										<span class="text-accent-green text-xs font-mono">
+											Redeemed by @{invite.redeemer?.username ?? '?'} · {timeAgo(invite.redeemed_at)}
+										</span>
+									{:else}
+										<span class="badge-pending text-xs">Available</span>
+									{/if}
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		{/if}
 	</div>
 </div>
