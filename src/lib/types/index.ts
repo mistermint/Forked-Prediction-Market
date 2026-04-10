@@ -9,7 +9,18 @@ export interface User {
 	bet_balance: number;
 	referral_code: string;
 	referred_by: string | null;
+	last_daily_claim: string | null;
 	created_at: string;
+}
+
+export interface InviteCode {
+	id: string;
+	code: string;
+	created_by: string;
+	redeemed_by: string | null;
+	redeemed_at: string | null;
+	created_at: string;
+	redeemer?: { username: string } | null;
 }
 
 export interface Market {

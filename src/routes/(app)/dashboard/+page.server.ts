@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 		locals.supabase
 			.from('profiles')
-			.select('role')
+			.select('role, last_daily_claim')
 			.eq('id', session!.user.id)
 			.single()
 	]);
@@ -48,6 +48,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		activeMarkets: markets ?? [],
 		recentActivity: recentActivity ?? [],
-		streamerStats
+		streamerStats,
+		lastDailyClaim: profileFull?.last_daily_claim ?? null
 	};
 };
