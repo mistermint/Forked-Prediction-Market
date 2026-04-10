@@ -48,7 +48,11 @@ export default {
 				retro: '4px 4px 0px rgba(0,0,0,0.5)',
 				'retro-sm': '2px 2px 0px rgba(0,0,0,0.5)',
 				'retro-lg': '6px 6px 0px rgba(0,0,0,0.5)',
-				'retro-green': '4px 4px 0px rgba(139, 164, 70, 0.4)'
+				'retro-green': '4px 4px 0px rgba(139, 164, 70, 0.4)',
+				'glow-sm': '0 0 10px rgba(139, 164, 70, 0.2)',
+				'glow': '0 0 20px rgba(139, 164, 70, 0.3)',
+				'glow-lg': '0 0 40px rgba(139, 164, 70, 0.4)',
+				'glass': 'inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.35)'
 			},
 			animation: {
 				blink: 'blink 1s step-end infinite',
