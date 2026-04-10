@@ -37,26 +37,38 @@
 		status = 'loading';
 		error = '';
 
-		const res = await fetch('/api/markets', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				title: title.trim(),
-				description: description.trim() || null,
-				outcomes: filled,
-				lockMinutes: lockEnabled ? lockMinutes : null
-			})
-		});
+		try {
+			const res = await fetch('/api/markets', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					title: title.trim(),
+					description: description.trim() || null,
+					outcomes: filled,
+					lockMinutes: lockEnabled ? lockMinutes : null
+				})
+			});
 
-		const data_res = await res.json();
+			let data_res: { success?: boolean; marketId?: string; error?: string };
+			try {
+				data_res = await res.json();
+			} catch {
+				error = `Server error (HTTP ${res.status}) — check server logs.`;
+				status = 'idle';
+				return;
+			}
 
-		if (!res.ok || data_res.error) {
-			error = data_res.error ?? 'Failed to create market.';
+			if (!res.ok || data_res.error) {
+				error = data_res.error ?? 'Failed to create market.';
+				status = 'idle';
+				return;
+			}
+
+			goto(`/market/${data_res.marketId!}`);
+		} catch {
+			error = 'Network error. Please try again.';
 			status = 'idle';
-			return;
 		}
-
-		goto(`/market/${data_res.marketId}`);
 	}
 </script>
 
