@@ -47,12 +47,13 @@
 
 <!-- Sidebar -->
 <aside
-	class="fixed top-0 left-0 h-full w-60 bg-surface-1 border-r border-surface-3 z-50
+	class="fixed top-0 left-0 h-full w-60 z-50
 		flex flex-col transition-transform duration-200 ease-in-out
 		{menuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0"
+	style="background: rgba(26,26,26,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-right: 1px solid rgba(139,164,70,0.1);"
 >
 	<!-- Logo -->
-	<div class="h-14 flex items-center px-4 border-b border-surface-3 shrink-0">
+	<div class="h-14 flex items-center px-4 shrink-0" style="border-bottom: 1px solid rgba(139,164,70,0.1);">
 		<a href="/dashboard" class="font-pixel text-pixel-xs text-forked-green hover:text-forked-green-light transition-colors">
 			FORKED.GG
 		</a>
@@ -63,11 +64,12 @@
 		{#each navItems as item}
 			<a
 				href={item.soon ? undefined : item.href}
-				class="flex items-center justify-between px-3 py-2.5 rounded-retro text-xs font-mono transition-colors
+				class="flex items-center justify-between px-3 py-2.5 rounded-retro text-xs font-mono transition-all duration-150
 					{isActive(item.href) && !item.soon
-						? 'bg-surface-3 text-text-primary shadow-retro-sm'
-						: 'text-text-muted hover:bg-surface-2 hover:text-text-secondary'}
+						? 'text-forked-green'
+						: 'text-text-muted hover:text-text-secondary hover:bg-white/5'}
 					{item.soon ? 'opacity-40 cursor-not-allowed' : ''}"
+				style={isActive(item.href) && !item.soon ? 'background: rgba(139,164,70,0.08); border: 1px solid rgba(139,164,70,0.15); text-shadow: 0 0 12px rgba(139,164,70,0.6);' : 'border: 1px solid transparent;'}
 				aria-disabled={item.soon}
 			>
 				{item.label}
@@ -114,9 +116,9 @@
 	</nav>
 
 	<!-- User info + logout -->
-	<div class="p-3 border-t border-surface-3 space-y-3 shrink-0">
+	<div class="p-3 space-y-3 shrink-0" style="border-top: 1px solid rgba(139,164,70,0.1);">
 		<!-- Balance chip -->
-		<div class="px-3 py-2 bg-surface-2 rounded-retro border border-surface-3 flex items-center justify-between">
+		<div class="px-3 py-2 rounded-retro flex items-center justify-between" style="background: rgba(139,164,70,0.08); border: 1px solid rgba(139,164,70,0.15);">
 			<span class="text-text-muted text-xs font-mono">Balance</span>
 			<span class="font-pixel text-pixel-xs text-forked-green">
 				{formatBalance(data.profile?.play_balance ?? 0)}
@@ -160,8 +162,8 @@
 <div class="lg:pl-60 min-h-screen flex flex-col">
 	<!-- Top bar -->
 	<header
-		class="h-14 sticky top-0 z-30 bg-surface border-b border-surface-3
-			flex items-center justify-between px-4"
+		class="h-14 sticky top-0 z-30 flex items-center justify-between px-4"
+		style="background: rgba(26,26,26,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139,164,70,0.08);"
 	>
 		<!-- Hamburger (mobile only) -->
 		<button
