@@ -6,7 +6,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const [{ data: markets }, { data: recentActivity }, { data: profileFull }] = await Promise.all([
 		locals.supabase
 			.from('markets')
-			.select('*, outcomes(*), creator:profiles!creator_id(username)')
+			.select('*, outcomes!market_id(*), creator:profiles!creator_id(username)')
 			.in('status', ['open', 'locked'])
 			.order('created_at', { ascending: false })
 			.limit(6),

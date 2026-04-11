@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 
 	const { data: market } = await locals.supabase
 		.from('markets')
-		.select('*, outcomes(*)')
+		.select('*, outcomes!market_id(*)')
 		.eq('id', marketId)
 		.in('status', ['open', 'locked', 'settled'])
 		.single();

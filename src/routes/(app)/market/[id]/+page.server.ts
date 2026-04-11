@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	] = await Promise.all([
 		locals.supabase
 			.from('markets')
-			.select('*, outcomes(*), creator:profiles!creator_id(id, username, display_name)')
+			.select('*, outcomes!market_id(*), creator:profiles!creator_id(id, username, display_name)')
 			.eq('id', params.id)
 			.single(),
 
